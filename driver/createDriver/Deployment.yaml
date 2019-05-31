@@ -1,0 +1,37 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: create-driver
+  name: create-driver
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: create-driver
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: create-driver
+    spec:
+      containers:
+      - image: soloio/petstore-example:latest
+        name: create-driver
+        ports:
+        - containerPort: 8080
+          name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: create-driver
+  namespace: default
+  labels:
+    service: create-driver
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+  selector:
+    app: create-driver
