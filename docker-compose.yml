@@ -1,0 +1,73 @@
+version: '3'
+services:
+  # proxy and dns for easy host access
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    depends_on:
+      - docker-dns
+
+  docker-dns:
+    image: finboxio/docker-dns
+    restart: always
+    ports:
+      - 53:53/udp
+
+  postgres:
+    image: mdillon/postgis:9.6-alpine
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql/data
+      - ./config/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    ports:
+      - 5432:5432
+    depends_on:
+      - nginx-proxy
+
+  backend:
+    build:
+      context: ./shuttle-backend/
+      dockerfile: Dockerfile-dev
+    command: ["yarn", "dev"]
+    volumes:
+      - /opt/app/node_modules
+      - ../shuttle-backend:/opt/app:consistent
+    environment:
+      VIRTUAL_HOST: backend.wshuttle.docker
+      MOLECULER_TRANSPORTER: amqp://guest:guest@rabbitmq
+      NAVIGATION_DB_CONNECTION_URL: postgresql://postgres:postgres@postgres/navigation
+    expose:
+      - 3000
+    env_file:
+      - ../shuttle-backend/development.env
+    depends_on:
+      - nginx-proxy
+      - postgres
+
+  driver-web:
+    build:
+      context: ./driver-web/
+      dockerfile: Dockerfile
+    command: ["yarn", "dev"]
+    environment:
+      VIRTUAL_HOST: web.driver.docker
+      API_BASE_URL: http://graphql.driver.docker
+      INTERNAL_API_BASE_URL: http://driver:3000
+    expose:
+      - 3001
+    env_file:
+      - ../shuttle-mission-control-web/development.env
+    volumes:
+      - /opt/app/node_modules
+      - ../shuttle-mission-control-web:/opt/app:consistent

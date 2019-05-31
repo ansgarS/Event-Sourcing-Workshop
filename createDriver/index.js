@@ -2,7 +2,8 @@ const getEnv = require('getenv');
 const express = require('express');
 const bodyParser = require('body-parser');
 const esClient = require('node-eventstore-client');
-const uuid = require('uuid/v4');
+// TODO Use it:
+// const uuid = require('uuid/v4');
 
 
 // Environments
