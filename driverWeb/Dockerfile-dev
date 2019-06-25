@@ -1,0 +1,12 @@
+ARG NODE_VERSION=10
+
+FROM node:${NODE_VERSION}-alpine
+
+RUN mkdir -p /opt/app
+WORKDIR /opt/app
+
+ADD package.json ./
+ADD yarn.lock ./
+RUN yarn install
+
+CMD ["yarn", "dev"]

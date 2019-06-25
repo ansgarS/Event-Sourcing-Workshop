@@ -1,0 +1,3 @@
+mutation verifyPassengerEmail($email: String!, $locale: String!) {
+  verifyPassengerEmail(input: { email: $email, locale: $locale })
+}

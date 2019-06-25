@@ -1,0 +1,46 @@
+@import "~antd/dist/antd.less";
+
+// https://ant.design/docs/react/customize-theme
+
+@primary-color: #6C63FF;
+@link-color: #6C63FF;
+@success-color: #04DE47;
+@warning-color: #FF9700;
+@error-color: #FF0043;
+// @font-size-base: 14px;
+@heading-color: #black;
+@text-color: #334146;
+@text-color-secondary : rgba(51, 65, 70, 0.01);
+@disabled-color: #979797;
+// @border-radius-base: 4px;
+// @border-color-base: #d9d9d9;
+// @box-shadow-base: 0 2px 8px rgba(0, 0, 0, .15);
+
+@menu-collapsed-width: 64;
+@menu-highlight-color: @text-color;
+@menu-item-active-bg: #F3F2F5;
+
+// FormItem Label
+@label-color: black;
+@form-item-trailing-colon: false;
+
+// FormItem Input
+@input-border-color: transparent;
+@input-font-style: none;
+
+@font-face {
+  font-family: 'Averta';
+  font-weight: normal;
+  src:
+    url('assets/fonts/Averta-Regular.woff2') format('woff2'),
+    url('assets/fonts/Averta-Regular.woff') format('woff');
+}
+
+body {
+  font-family: Averta;
+}
+
+.ant-menu-item {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}

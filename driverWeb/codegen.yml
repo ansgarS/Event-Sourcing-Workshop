@@ -1,0 +1,13 @@
+schema: http://localhost:3000/graphql
+documents: ./src/**/*.graphql
+overwrite: true
+config:
+  noNamespaces: true
+generates:
+  src/queries.tsx:
+    plugins:
+      - time
+      - add: "/* tslint:disable */"
+      - typescript-common
+      - typescript-client
+      - typescript-react-apollo

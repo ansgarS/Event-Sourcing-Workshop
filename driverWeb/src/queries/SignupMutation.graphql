@@ -1,0 +1,22 @@
+mutation signupAsPassenger(
+  $lastName: String!,
+  $firstName: String!,
+  $email: String!,
+  $password: String!,
+  $locale: String!,
+  $code: String!
+) {
+  signUpAsPassenger(input: {
+    firstName: $firstName,
+    lastName: $lastName,
+    email: $email,
+    password: $password,
+    locale: $locale,
+    code: $code
+  }) {
+    passenger {
+      id
+      name
+    }
+  }
+}

@@ -2,22 +2,22 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    app: create-driver
-  name: create-driver
+    app: get-drivers
+  name: get-drivers
   namespace: default
 spec:
   selector:
     matchLabels:
-      app: create-driver
+      app: get-drivers
   replicas: 1
   template:
     metadata:
       labels:
-        app: create-driver
+        app: get-drivers
     spec:
       containers:
-      - image: gcr.io/create-driver-image:latest
-        name: create-driver
+      - image: gcr.io/get-drivers-image:latest
+        name: get-drivers
         ports:
         - containerPort: 8080
           name: http
@@ -25,13 +25,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: create-driver
+  name: get-drivers
   namespace: default
   labels:
-    service: create-driver
+    service: get-drivers
 spec:
   ports:
   - port: 8080
     protocol: TCP
   selector:
-    app: create-driver
+    app: get-drivers
