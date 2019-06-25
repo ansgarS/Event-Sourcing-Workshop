@@ -17,21 +17,17 @@ services:
     ports:
       - 53:53/udp
 
-  postgres:
-    image: mdillon/postgis:9.6-alpine
-    volumes:
-      - ./volumes/postgres:/var/lib/postgresql/data
-      - ./config/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U postgres']
-      interval: 5s
-      timeout: 10s
-      retries: 5
+  eventstore:
+    image: eventstore/eventstore
     ports:
-      - 5432:5432
+      - 2113:2113
+      - 1113:1113
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:2113/gossip"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     depends_on:
       - nginx-proxy
 
