@@ -2,7 +2,7 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import { makeRemoteExecutableSchema, mergeSchemas, introspectSchema } from 'graphql-tools';
-import { createApolloFetch, } from 'apollo-fetch';
+import { createApolloFetch } from 'apollo-fetch';
 
 const createRemoteSchema = async (uri: string) => {
 	const fetcher = createApolloFetch({ uri });
